@@ -40,7 +40,7 @@ class Base
      * @param array $params
      * @return resource
      */
-    public function connect(string $route, array $params = [], array $data = [])
+    public function connect($route, array $params = [], array $data = [])
     {
         $url  = "http://" . $this->goip->host . '/default/en_US';
         $url .= $route . '?' . http_build_query($params);
