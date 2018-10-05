@@ -46,17 +46,13 @@ class Sms extends Base
             ["type" => "sms_inbox"]
         );
 
-        preg_match_all('/sms\=\s\[[^\]]*\]/', $result, $lines);
-        foreach($lines[0] as $i => $data) {
+        preg_match_all('/sms\=\s(.*\]);/', $result, $lines);
+        foreach($lines[1] as $i => $data) {
             $line = $i + 1;
             $messages[$line] = [];
-            $data = str_replace('sms= [', '', $data);
-            $data = str_replace(']', '', $data);
-            $data = explode('",', $data);
-            foreach ($data as $key => $message) {
-                $message = ltrim($message, '"');
-                $message = rtrim($message, '"');
 
+            $data = json_decode($data);
+            foreach ($data as $message) {
                 if (empty($message)) {
                     continue;
                 }
