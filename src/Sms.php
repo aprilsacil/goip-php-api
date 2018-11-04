@@ -47,11 +47,16 @@ class Sms extends Base
         );
 
         preg_match_all('/sms\=\s(.*\]);/', $result, $lines);
-        foreach($lines[1] as $i => $data) {
+        foreach($lines[1] as $i => $dataRaw) {
             $line = $i + 1;
             $messages[$line] = [];
 
-            $data = json_decode($data);
+            $data = json_decode($dataRaw);
+            
+            if (is_null($data)) {
+                $dataRaw = iconv("UTF-8", "UTF-8//IGNORE", $dataRaw);
+                $data = json_decode($dataRaw);
+            }
             foreach ($data as $message) {
                 if (empty($message)) {
                     continue;
