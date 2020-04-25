@@ -64,23 +64,39 @@ class GoipClient
 
     /**
      * Initialize the client connection
-     * given the host, port, username and password
+     * given the host, port, username and password.
+     * $host can be array of arguments.
      *
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   int
+     * @param string|array $host
+     * @param string       $username
+     * @param string       $password
+     * @param int          $port
      */
-    public function __construct($host, $username, $password, $port = 80)
+    public function __construct($host, $username = '', $password = '', $port = 80)
     {
-        // set the host
-        $this->host     = $host;
-        // set the port
-        $this->port     = $port;
-        // set the username
-        $this->username = $username;
-        // set the password
-        $this->password = $password;
+        if (is_array($host)) {
+            // set the host
+            $this->host = $host['host'];
+            // set the username
+            $this->username = $host['username'];
+            // set the password
+            $this->password = $host['password'];
+            // set the port
+            if (isset($host['port'])) {
+                $this->port = $host['port'];
+            } else {
+                $this->port = $port;
+            }
+        } else {
+            // set the host
+            $this->host = $host;
+            // set the port
+            $this->port = $port;
+            // set the username
+            $this->username = $username;
+            // set the password
+            $this->password = $password;
+        }
     }
 
     /**
